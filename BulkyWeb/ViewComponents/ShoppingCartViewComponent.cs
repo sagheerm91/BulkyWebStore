@@ -28,11 +28,6 @@ namespace BulkyWeb.ViewComponents
                 .Distinct()
                 .Count());
 
-                   /* int uniqueItemCount = _context.ShoppingCarts
-                .Where(u => u.ApplicationUserId == userId)
-                .Select(u => u.ProductId)
-                .Distinct()
-                .Count(); */
                 }
 
                 return View(HttpContext.Session.GetInt32(SD.SessionCart));

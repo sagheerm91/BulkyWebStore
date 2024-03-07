@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BulkyWeb.Controllers
 {
-    [Authorize(Roles = SD.Role_Admin)]
+    // [Authorize(Roles = "Admin")]
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -69,7 +69,7 @@ namespace BulkyWeb.Controllers
                 Value = u.Id.ToString()
             });
             ViewBag.CategoryList = CategoryList;
-
+            
             if (id == null || id == 0)
             {
                 return NotFound();

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BulkyWeb.Controllers
 {
-    [Authorize(Roles = SD.Role_Admin)]
+    [Authorize(Roles = "Admin")]
     public class CategoryController : Controller
     {
         private readonly ApplicationDbContext _db;

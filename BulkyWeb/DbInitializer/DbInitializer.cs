@@ -3,6 +3,9 @@ using BulkyWeb.Models;
 using BulkyWeb.Utility;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Diagnostics.Metrics;
 
 namespace BulkyWeb.DbInitializer
 {
@@ -22,7 +25,7 @@ namespace BulkyWeb.DbInitializer
             _userManager = userManager;
             _roleManager = roleManager;
         }
-        public void Initialize()
+        public async void Initialize()
         {
             // migrate if any pending migrations
             try
@@ -38,32 +41,35 @@ namespace BulkyWeb.DbInitializer
             }
 
             // create roles if they are not created
-            if (!_roleManager.RoleExistsAsync(SD.Role_Customer).GetAwaiter().GetResult())
+            if (!_roleManager.RoleExistsAsync("Customer").GetAwaiter().GetResult())
             {
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole("Customer")).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Company)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Employee)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole("Admin")).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole("Employee")).GetAwaiter().GetResult();
 
 
                 // if roles are not created then create an admin role
 
-                _userManager.CreateAsync(new ApplicationUser
+                    ApplicationUser user = new ApplicationUser
+                    {
+                        UserName = "admin@gmail.com",
+                        Email = "admin@gmail.com",
+                        Name = "Sahir",
+                        PhoneNumber = "03430360010",
+                        StreetAddress = "Galli Qasim Jan",
+                        City = "Delhi",
+                        State = "Pata ni",
+                        PostalCode = "1234567"
+                    };
+
+                    var result = await _userManager.CreateAsync(user, "Admin123*");
+                if (result.Succeeded)
                 {
-                    UserName = "superadmin@gmail.com",
-                    Email = "superadmin@gmail.com",
-                    Name = "Sahir",
-                    PhoneNumber = "03430360010",
-                    StreetAddress = "Galli Qasim Jan",
-                    City = "Delhi",
-                    State = "Pata ni",
-                    PostalCode = "1234567"
-                }, "Admin123*").GetAwaiter().GetResult();
-
-                ApplicationUser user = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "superadmin@gmail.com");
-                _userManager.AddToRoleAsync(user, SD.Role_Admin);
+                    await _userManager.AddToRoleAsync(user, "Admin");
+                }
+                
             }
-
             return;
             
         }

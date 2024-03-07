@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
 using System.Security.Claims;
 
@@ -23,8 +24,21 @@ namespace BulkyWeb.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Product> products = _db.Products.Include(u=>u.Category);
-            
+            IEnumerable<Product> products;
+
+            string searchTerm = HttpContext.Request.Query["search"].ToString();
+
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                products = _db.Products.Include(u => u.Category)
+                    .Where(p => p.Title.Contains(searchTerm) || p.Author.Contains(searchTerm));
+            }
+            else
+            {
+                products = _db.Products.Include(u => u.Category);
+            }
+  
             return View(products);
         }
       //  [Route("Details/{id}")]

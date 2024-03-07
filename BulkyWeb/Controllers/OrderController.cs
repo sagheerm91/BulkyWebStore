@@ -23,7 +23,7 @@ namespace BulkyWeb.Controllers
             _db = db;
             stripeUpdates = new StripeUpdates(db);
         }
-        //[Authorize(Roles = SD.Role_Admin)]
+        //[Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             return View();
@@ -41,7 +41,7 @@ namespace BulkyWeb.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee)]
+        [Authorize(Roles = "Admin" + "," + "Employee")]
         public IActionResult UpdateOrderDetails()
         {
             var orderFromDb = _db.OrderHeaders.FirstOrDefault(u => u.Id == orderVM.OrderHeader.Id);
@@ -71,7 +71,7 @@ namespace BulkyWeb.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee)]
+        [Authorize(Roles = "Admin" + "," + "Employee")]
         public IActionResult StartProcessingOrder()
         {
             stripeUpdates.UpdateStatus(orderVM.OrderHeader.Id, SD.StatusInProcess);
@@ -82,7 +82,7 @@ namespace BulkyWeb.Controllers
 
         // Shipping Order
         [HttpPost]
-        [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee)]
+        [Authorize(Roles = "Admin" + "," + "Employee")]
         public IActionResult ShipOrder()
         {
             var orderFromDb = _db.OrderHeaders.FirstOrDefault(u => u.Id == orderVM.OrderHeader.Id);
@@ -104,7 +104,7 @@ namespace BulkyWeb.Controllers
 
         // Cancel Order
         [HttpPost]
-        [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee)]
+        [Authorize(Roles = "Admin" + "," + "Employee")]
         public IActionResult CancelOrder()
         {
             var orderFromDb = _db.OrderHeaders.FirstOrDefault(u => u.Id == orderVM.OrderHeader.Id);
@@ -214,7 +214,7 @@ namespace BulkyWeb.Controllers
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            if (!(User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee)))
+            if (!(User.IsInRole("Admin") || User.IsInRole("Employee")))
             {
                 objOrderHeader = objOrderHeader.Where(u => u.ApplicationUserId == userId).ToList();
             }

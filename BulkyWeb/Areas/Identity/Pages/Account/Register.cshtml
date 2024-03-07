@@ -7,7 +7,7 @@
     <div class="card-header bg-black  ml-0 py-4 rounded-top-4">
         <div class=row>
             <div class="col-12 text-center">
-                @if(User.IsInRole(SD.Role_Admin))
+                @if(User.IsInRole("Admin"))
                 {
                     <h2 class="py-2 text-white">Register - ADMIN PORTAL</h2>
 
@@ -72,7 +72,7 @@
                         <label asp-for="Input.PostalCode" class="ms-2 text-muted">Postal Code</label>
                         <span asp-validation-for="Input.PostalCode" class="text-danger"></span>
                     </div>
-                    @if(User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+                    @if(User.IsInRole("Admin") || User.IsInRole("Employee"))
                     {
                         <div class="form-floating mb-3 col-md-6">
                             <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
@@ -93,7 +93,7 @@
             </div>
 
 
-            @if (!(User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee)))
+            @if (!(User.IsInRole("Admin") || User.IsInRole("Employee")))
             {
                 <div class="col-md-12">
                     <section>

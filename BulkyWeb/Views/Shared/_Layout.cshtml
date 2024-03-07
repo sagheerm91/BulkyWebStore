@@ -35,8 +35,8 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
-                                    {
+                        @if (User.IsInRole("Admin") || User.IsInRole("Employee"))
+                                   {
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Category" asp-action="Index">Category</a>
                             </li>
@@ -60,7 +60,19 @@
                                     @await Component.InvokeAsync("ShoppingCart")
                                 </a>
                             </li>
-                        
+
+                        <li class="nav-item">
+                            <form class="form-inline" method="get" action="@Url.Action("Index", "Home")">
+                                <div class="input-group">
+                                    <input name="search" style="border: 2px solid #ffff; border-radius: 6px; padding: 8px; width: 300px;"
+                                           placeholder="Search Books by Title or Author" aria-label="Search" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-light text-bg-primary" type="submit" style="margin: 2px">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
+
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

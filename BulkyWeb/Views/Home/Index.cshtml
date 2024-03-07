@@ -1,5 +1,15 @@
 ﻿@model IEnumerable<Product>
 
+
+@if (!Model.Any())
+{
+    <div class="p-4">
+        <p>Nothing found for your search...</p>
+    </div>
+    
+}
+
+
 <div class="row pb-3">
     @foreach (var product in Model)
     {

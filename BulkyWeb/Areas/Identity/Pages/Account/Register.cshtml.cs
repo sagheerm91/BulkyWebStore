@@ -183,7 +183,7 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _userManager.AddToRoleAsync(user, SD.Role_Customer);
+                        await _userManager.AddToRoleAsync(user, "Customer");
                     }
 
                     var userId = await _userManager.GetUserIdAsync(user);
@@ -204,7 +204,7 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        if(User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+                        if(User.IsInRole("Admin") || User.IsInRole("Employee"))
                         {
                             TempData["success"] = "User has been created successfully";
                         }
